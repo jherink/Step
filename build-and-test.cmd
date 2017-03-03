@@ -9,7 +9,7 @@ if not exist "%thisdir%bin\%antlr_jar%" (
 )
 
 set CLASSPATH=.;%thisdir%bin\%antlr_jar%;%CLASSPATH%
-java org.antlr.v4.Tool %thisdir%src\ExpressSchema.g
+java org.antlr.v4.Tool %thisdir%src\ExpressSchema.g4 -o %thisdir%src\Parser
 
 :: build
 set TEST_PROJECT=%thisdir%src\IxMilia.Step.Test\IxMilia.Step.Test.csproj
