@@ -28,6 +28,17 @@ namespace IxMilia.Step.Items
         {
         }
 
+        internal override IEnumerable<StepRepresentationItem> GetReferencedItems()
+        {
+            if ( Bounds != null )
+            {
+                foreach ( var bound in Bounds )
+                {
+                    yield return bound;
+                }
+            }
+        }
+
         internal override IEnumerable<StepSyntax> GetParameters( StepWriter writer )
         {
             foreach ( var parameter in base.GetParameters( writer ) )

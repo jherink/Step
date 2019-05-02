@@ -7,14 +7,6 @@ using System.Linq;
 
 namespace IxMilia.Step.Items
 {
-    public enum KnotType
-    {
-        UniformKnots,
-        QuasiUniformKnots,
-        PiecewiseBezierKnots,
-        Unspecified
-    };
-
     public class StepBSplineCurveWithKnots : StepBSplineCurve
     {
         private List<int> _knotMultiplicities = new List<int>();
@@ -59,44 +51,7 @@ namespace IxMilia.Step.Items
         }
 
         public override StepItemType ItemType => StepItemType.BSplineCurveWithKnots;
-
-        private const string UNIFORM_KNOTS = "UNIFORM_KNOTS";
-        private const string QUASI_UNIFORM_KNOTS = "QUASI_UNIFORM_KNOTS";
-        private const string PIECEWISE_BEZIER_KNOTS = "PIECEWISE_BEZIER_KNOTS";
-        private const string UNSPECIFIED = "UNSPECIFIED";
-
-        private static KnotType ParseKnotSpec( string enumerationValue )
-        {
-            switch ( enumerationValue.ToUpperInvariant() )
-            {
-                case UNIFORM_KNOTS:
-                    return KnotType.UniformKnots;
-                case QUASI_UNIFORM_KNOTS:
-                    return KnotType.QuasiUniformKnots;
-                case PIECEWISE_BEZIER_KNOTS:
-                    return KnotType.PiecewiseBezierKnots;
-                default:
-                    return KnotType.Unspecified;
-            }
-        }
-
-        private static string GetKnotSpec( KnotType spec )
-        {
-            switch ( spec )
-            {
-                case KnotType.UniformKnots:
-                    return UNIFORM_KNOTS;
-                case KnotType.QuasiUniformKnots:
-                    return QUASI_UNIFORM_KNOTS;
-                case KnotType.PiecewiseBezierKnots:
-                    return PIECEWISE_BEZIER_KNOTS;
-                case KnotType.Unspecified:
-                    return UNSPECIFIED;
-            }
-
-            throw new NotImplementedException();
-        }
-
+        
         internal override IEnumerable<StepSyntax> GetParameters( StepWriter writer )
         {
             foreach ( var parameter in base.GetParameters( writer ) )
@@ -106,7 +61,7 @@ namespace IxMilia.Step.Items
 
             yield return new StepSyntaxList( KnotMultiplicities.Select( m => new StepIntegerSyntax( m ) ) );
             yield return new StepSyntaxList( Knots.Select( k => new StepRealSyntax( k ) ) );
-            yield return new StepEnumerationValueSyntax( GetKnotSpec( KnotSpec ) );
+            yield return new StepEnumerationValueSyntax( ( new StepKnotTypeValueParser() ).Get( KnotSpec ) );
         }
 
         internal static StepBSplineCurveWithKnots CreateFromSyntaxList( StepBinder binder, StepSyntaxList syntaxList )
@@ -124,7 +79,7 @@ namespace IxMilia.Step.Items
                 binder.BindValue( controlPointsList.Values[j], v => spline.ControlPointsList[j] = v.AsType<StepCartesianPoint>() );
             }
 
-            spline.CurveForm = StepBSplineCurve.ParseCurveForm( syntaxList.Values[3].GetEnumerationValue() );
+            spline.CurveForm = new StepBSplineCurveFormParser().Parse( syntaxList.Values[3].GetEnumerationValue() );
             spline.ClosedCurve = syntaxList.Values[4].GetBooleanValue();
             spline.SelfIntersect = syntaxList.Values[5].GetBooleanValue();
 
@@ -142,7 +97,7 @@ namespace IxMilia.Step.Items
                 spline.Knots.Add( knotslist.Values[i].GetRealVavlue() );
             }
 
-            spline.KnotSpec = ParseKnotSpec( syntaxList.Values[8].GetEnumerationValue() );
+            spline.KnotSpec = ( new StepKnotTypeValueParser() ).Parse( syntaxList.Values[8].GetEnumerationValue() );
 
             return spline;
         }

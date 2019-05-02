@@ -10,8 +10,11 @@ namespace IxMilia.Step.Items
         AxisPlacement2D,
         AxisPlacement3D,
         BSplineCurveWithKnots,
+        BSplineSurfaceWithKnots,
         CartesianPoint,
         Circle,
+        ClosedShell,
+        ConicalSurface,
         CylindricalSurface,
         Direction,
         EdgeCurve,
@@ -20,6 +23,7 @@ namespace IxMilia.Step.Items
         FaceBound,
         FaceOuterBound,
         Line,
+        OpenShell,
         OrientedEdge,
         Plane,
         Vector,
@@ -32,8 +36,11 @@ namespace IxMilia.Step.Items
         public const string Axis2Placement2DText = "AXIS2_PLACEMENT_2D";
         public const string Axis2Placement3DText = "AXIS2_PLACEMENT_3D";
         public const string BSplineCurveWithKnotsText = "B_SPLINE_CURVE_WITH_KNOTS";
+        public const string BSplineSurfaceWithKnotsText = "B_SPLINE_SURFACE_WITH_KNOTS";
         public const string CartesianPointText = "CARTESIAN_POINT";
         public const string CircleText = "CIRCLE";
+        public const string ClosedShellText = "CLOSED_SHELL";
+        public const string ConicalSurfaceText = "CONICAL_SURFACE";
         public const string CylindricalSurfaceText = "CYLINDRICAL_SURFACE";
         public const string DirectionText = "DIRECTION";
         public const string EdgeCurveText = "EDGE_CURVE";
@@ -42,6 +49,7 @@ namespace IxMilia.Step.Items
         public const string FaceBoundText = "FACE_BOUND";
         public const string FaceOuterBoundText = "FACE_OUTER_BOUND";
         public const string LineText = "LINE";
+        public const string OpenShellText = "OPEN_SHELL";
         public const string OrientedEdgeText = "ORIENTED_EDGE";
         public const string PlaneText = "PLANE";
         public const string VectorText = "VECTOR";
@@ -59,10 +67,16 @@ namespace IxMilia.Step.Items
                     return Axis2Placement3DText;
                 case StepItemType.BSplineCurveWithKnots:
                     return BSplineCurveWithKnotsText;
+                case StepItemType.BSplineSurfaceWithKnots:
+                    return BSplineSurfaceWithKnotsText;
                 case StepItemType.CartesianPoint:
                     return CartesianPointText;
                 case StepItemType.Circle:
                     return CircleText;
+                case StepItemType.ClosedShell:
+                    return ClosedShellText;
+                case StepItemType.ConicalSurface:
+                    return ConicalSurfaceText;
                 case StepItemType.CylindricalSurface:
                     return CylindricalSurfaceText;
                 case StepItemType.Direction:
@@ -79,6 +93,8 @@ namespace IxMilia.Step.Items
                     return FaceOuterBoundText;
                 case StepItemType.Line:
                     return LineText;
+                case StepItemType.OpenShell:
+                    return OpenShellText;
                 case StepItemType.OrientedEdge:
                     return OrientedEdgeText;
                 case StepItemType.Plane:

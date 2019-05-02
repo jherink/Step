@@ -30,11 +30,20 @@ namespace IxMilia.Step.Items
                     case StepItemTypeExtensions.BSplineCurveWithKnotsText:
                         item = StepBSplineCurveWithKnots.CreateFromSyntaxList( binder, simpleItem.Parameters );
                         break;
+                    case StepItemTypeExtensions.BSplineSurfaceWithKnotsText:
+                        item = StepBSplineSurfaceWithKnots.CreateFromSyntaxList( binder, simpleItem.Parameters );
+                        break;
                     case StepItemTypeExtensions.CartesianPointText:
                         item = StepCartesianPoint.CreateFromSyntaxList(simpleItem.Parameters);
                         break;
                     case StepItemTypeExtensions.CircleText:
                         item = StepCircle.CreateFromSyntaxList(binder, simpleItem.Parameters);
+                        break;
+                    case StepItemTypeExtensions.ClosedShellText:
+                        item = StepClosedShell.CreateFromSyntaxList( binder, simpleItem.Parameters );
+                        break;
+                    case StepItemTypeExtensions.ConicalSurfaceText:
+                        item = StepConicalSurface.CreateFromSyntaxList( binder, simpleItem.Parameters );
                         break;
                     case StepItemTypeExtensions.CylindricalSurfaceText:
                         item = StepCylindricalSurface.CreateFromSyntaxList(binder, simpleItem.Parameters);
@@ -59,6 +68,9 @@ namespace IxMilia.Step.Items
                         break;
                     case StepItemTypeExtensions.LineText:
                         item = StepLine.CreateFromSyntaxList(binder, simpleItem.Parameters);
+                        break;
+                    case StepItemTypeExtensions.OpenShellText:
+                        item = StepOpenShell.CreateFromSyntaxList( binder, simpleItem.Parameters );
                         break;
                     case StepItemTypeExtensions.OrientedEdgeText:
                         item = StepOrientedEdge.CreateFromSyntaxList(binder, simpleItem.Parameters);

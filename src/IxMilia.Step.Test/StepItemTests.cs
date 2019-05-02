@@ -237,6 +237,40 @@ END-ISO-10303-21;
         }
 
         [Fact]
+        public void ReadBSplineSurfaceWithKnotsItemsTest()
+        {
+            var surface = (StepBSplineSurfaceWithKnots)ReadTopLevelItem( @"
+#1=CARTESIAN_POINT('Ctrl Pts',(0.375,32.4796609097699,7.67834821104123));
+#2=CARTESIAN_POINT('Ctrl Pts',(0.379055657959807,32.4796609097699,7.75573477493098));
+#3=CARTESIAN_POINT('Ctrl Pts',(0.383111315919614,32.4796609097699,7.83312133882072));
+#4=CARTESIAN_POINT('Ctrl Pts',(0.387166973879421,32.4796609097699,7.91050790271048));
+#5=CARTESIAN_POINT('Ctrl Pts',(0.375,32.4863832404348,7.67834821104123));
+#6=CARTESIAN_POINT('Ctrl Pts',(0.379055658500089,32.4864559430349,7.75573477493098));
+#7=CARTESIAN_POINT('Ctrl Pts',(0.383111315379332,32.4865286456257,7.83312133882072));
+#8=CARTESIAN_POINT('Ctrl Pts',(0.387166973879421,32.4866013482258,7.91050790271048));
+#9=CARTESIAN_POINT('Ctrl Pts',(0.374819008215575,32.4931700514279,7.67835705727717));
+#10=CARTESIAN_POINT('Ctrl Pts',(0.378872709270433,32.4933161540084,7.75574362116692));
+#11=CARTESIAN_POINT('Ctrl Pts',(0.382926408713967,32.4934622565105,7.83313018505667));
+#12=CARTESIAN_POINT('Ctrl Pts',(0.386980109768826,32.4936083590911,7.91051674894642));
+#13=CARTESIAN_POINT('Ctrl Pts',(0.374448022305649,32.5,7.67837514898767));
+#14=CARTESIAN_POINT('Ctrl Pts',(0.378497710578177,32.5002199690485,7.75576171287742));
+#15=CARTESIAN_POINT('Ctrl Pts',(0.382547398850705,32.500439938097,7.83314827676717));
+#16=CARTESIAN_POINT('Ctrl Pts',(0.386597087123232,32.5006599071455,7.91053484065692));
+#17=B_SPLINE_SURFACE_WITH_KNOTS('',3,3,((#1,#2,#3,#4),(#5,
+#6,#7,#8),(#9,#10,#11,#12),(#13,#14,#15,#16)),
+ .UNSPECIFIED.,.F.,.F.,.F.,(4,4),(4,4),(-5.74168255249691,-5.69045839282998),
+(0.,0.590494869536192),.UNSPECIFIED.);
+" );
+            Assert.Equal( 4, surface.ControlPointsList.Count );
+            Assert.Equal( 3, surface.UDegree );
+            Assert.Equal( 3, surface.VDegree );
+            Assert.Equal( 2, surface.UMultiplicities.Count );
+            Assert.Equal( 2, surface.VMultiplicities.Count );
+            Assert.Equal( 2, surface.VKnots.Count );
+            Assert.Equal( 2, surface.VKnots.Count );
+        }
+
+        [Fact]
         public void WriteEllipseTest()
         {
             var ellipse = new StepEllipse("", new StepAxis2Placement2D("", new StepCartesianPoint("", 1.0, 2.0, 3.0), new StepDirection("", 0.0, 0.0, 1.0)), 3.0, 4.0);
@@ -294,7 +328,7 @@ END-ISO-10303-21;
 #5=PLANE('',#4);
 ");
         }
-
+        
         [Fact]
         public void WritePlaneTest()
         {
@@ -308,6 +342,45 @@ END-ISO-10303-21;
 #4=AXIS2_PLACEMENT_3D('',#1,#2,#3);
 #5=PLANE('',#4);
 ");
+        }
+
+
+        [Fact]
+        public void ReadConicalSurfaceTest()
+        {
+            var surface = (StepConicalSurface)ReadTopLevelItem( @"
+#1=DIRECTION('center_axis',(0.,-1.,0.));
+#2=DIRECTION('ref_axis',(1.,0.,0.));
+#3=CARTESIAN_POINT('Origin',(0.,0.353553390593274,0.));
+#4=AXIS2_PLACEMENT_3D('',#3,#1,#2);
+#15=CONICAL_SURFACE('',#4,0.646446609406726,0.785398163397449);
+" );
+            Assert.NotNull( surface.Position );
+            Assert.Equal( 0.646446609406726, surface.Radius );
+            Assert.Equal( 0.785398163397449, surface.SemiAngle );
+        }
+
+        [Fact]
+        public void WriteConicalSurface()
+        {
+            var surface = new StepConicalSurface
+            {
+                Name = string.Empty,
+                Position = new StepAxis2Placement3D( string.Empty,
+                                                     new StepCartesianPoint( "", 0, 0, 0 ), 
+                                                     new StepDirection( "", 0, 1, 0 ), 
+                                                     new StepDirection( "", 0, 0, 1 ) ),
+                Radius = 1,
+                SemiAngle = .5
+            };
+            AssertFileContains( surface, @"
+#1=CARTESIAN_POINT('',(0.0,0.0,0.0));
+#2=DIRECTION('',(0.0,1.0,0.0));
+#3=DIRECTION('',(0.0,0.0,1.0));
+#4=AXIS2_PLACEMENT_3D('',#1,#2,#3);
+#5=CONICAL_SURFACE('',#4,1.0,0.5);
+" );
+
         }
 
         [Fact]
@@ -377,7 +450,7 @@ END-ISO-10303-21;
         [Fact]
         public void ReadAdvancedFaceTest()
         {
-            var file = ReadFile( @"
+            var face = (StepAdvancedFace)ReadTopLevelItem( @"
 #1=FACE_OUTER_BOUND('',#2,.T.);
 #2=EDGE_LOOP('',(#12,#13,#14,#15));
 #3=LINE('',#31,#4);
@@ -412,7 +485,6 @@ END-ISO-10303-21;
 #32=CARTESIAN_POINT('Origin',(0.,0.,0.));
 #33=ADVANCED_FACE('',(#1),#16,.F.);
 " );
-            var face = file.GetTopLevelItems().OfType<StepAdvancedFace>().FirstOrDefault();
             Assert.NotNull( face );
             Assert.NotNull( face.FaceGeometry );
             Assert.Equal( 1, face.Bounds.Count );            
@@ -587,5 +659,7 @@ END-ISO-10303-21;
 .UNSPECIFIED.);
 " );
         }
+
+
     }
 }
