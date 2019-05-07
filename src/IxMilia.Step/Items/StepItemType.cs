@@ -26,6 +26,7 @@ namespace IxMilia.Step.Items
         OpenShell,
         OrientedEdge,
         Plane,
+        SphericalSurface,
         Vector,
         VertexPoint
     }
@@ -52,6 +53,7 @@ namespace IxMilia.Step.Items
         public const string OpenShellText = "OPEN_SHELL";
         public const string OrientedEdgeText = "ORIENTED_EDGE";
         public const string PlaneText = "PLANE";
+        public const string SphericalSurfaceText = "SPHERICAL_SURFACE";
         public const string VectorText = "VECTOR";
         public const string VertexPointText = "VERTEX_POINT";
 
@@ -99,6 +101,8 @@ namespace IxMilia.Step.Items
                     return OrientedEdgeText;
                 case StepItemType.Plane:
                     return PlaneText;
+                case StepItemType.SphericalSurface:
+                    return SphericalSurfaceText;
                 case StepItemType.Vector:
                     return VectorText;
                 case StepItemType.VertexPoint:

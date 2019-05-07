@@ -641,6 +641,40 @@ END-ISO-10303-21;
         }
 
         [Fact]
+        public void ReadSphericalSurfaceTest()
+        {
+            var surface = (StepSphericalSurface)ReadTopLevelItem( @"
+#1=DIRECTION('center_axis',(1.,-6.12323399573677E-17,0.));
+#2=DIRECTION('ref_axis',(0.,-1.,0.));
+#3=CARTESIAN_POINT('Origin',(0.,0.,0.));
+#4=AXIS2_PLACEMENT_3D('',#3,#1,#2);
+#5=SPHERICAL_SURFACE('',#4,1.);
+" );
+
+            Assert.Equal( 1.0, surface.Radius );
+            Assert.Equal( 0.0, surface.Position.Location.X );
+            Assert.Equal( 0.0, surface.Position.Location.Y );
+            Assert.Equal( 0.0, surface.Position.Location.Z );
+        }
+
+        [Fact]
+        public void WriteSphericalSurfaceTest()
+        {
+            var origin = new StepCartesianPoint( "", 0, 0, 0 );
+            var centerAxis = new StepDirection( "", 1, 0, 0 );
+            var refAxis = new StepDirection( "", 0, -1, 0 );
+            var axis = new StepAxis2Placement3D( "", origin, centerAxis, refAxis );
+            var surface = new StepSphericalSurface( "", axis, 1 );
+            AssertFileContains( surface, @"
+#1=CARTESIAN_POINT('',(0.0,0.0,0.0));
+#2=DIRECTION('',(1.0,0.0,0.0));
+#3=DIRECTION('',(0.0,-1.0,0.0));
+#4=AXIS2_PLACEMENT_3D('',#1,#2,#3);
+#5=SPHERICAL_SURFACE('',#4,1.0);
+" );
+        }
+
+        [Fact]
         public void WriteBSplineWithKnotsTest()
         {
             var spline = new StepBSplineCurveWithKnots(
