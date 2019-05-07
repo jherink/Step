@@ -27,6 +27,7 @@ namespace IxMilia.Step.Items
         OrientedEdge,
         Plane,
         SphericalSurface,
+        ToroidalSurface,
         Vector,
         VertexPoint
     }
@@ -54,6 +55,7 @@ namespace IxMilia.Step.Items
         public const string OrientedEdgeText = "ORIENTED_EDGE";
         public const string PlaneText = "PLANE";
         public const string SphericalSurfaceText = "SPHERICAL_SURFACE";
+        public const string ToroidalSurfaceText = "TOROIDAL_SURFACE";
         public const string VectorText = "VECTOR";
         public const string VertexPointText = "VERTEX_POINT";
 
@@ -103,6 +105,8 @@ namespace IxMilia.Step.Items
                     return PlaneText;
                 case StepItemType.SphericalSurface:
                     return SphericalSurfaceText;
+                case StepItemType.ToroidalSurface:
+                    return ToroidalSurfaceText;
                 case StepItemType.Vector:
                     return VectorText;
                 case StepItemType.VertexPoint:

@@ -694,6 +694,37 @@ END-ISO-10303-21;
 " );
         }
 
+        [Fact]
+        public void ReadToroidalSurface()
+        {
+            var surface = (StepToroidalSurface)ReadTopLevelItem( @"
+#1=DIRECTION('center_axis',(0.,-1.,0.));
+#2=DIRECTION('ref_axis',(0.,0.,-1.));
+#3=CARTESIAN_POINT('Origin',(0.,0.,0.));
+#4=AXIS2_PLACEMENT_3D('',#3,#1,#2);
+#26=TOROIDAL_SURFACE('',#4,1.,0.5);
+" );
+
+            Assert.Equal( 1, surface.MajorRadius );
+            Assert.Equal( 0.5, surface.MinorRadius );
+        }
+
+        [Fact]
+        public void WriteToroidalSurface()
+        {
+            var origin = new StepCartesianPoint( "", 0, 0, 0 );
+            var centerAxis = new StepDirection( "", 0, -1, 0 );
+            var refAxis = new StepDirection( "", 0, 0, -1 );
+            var axis = new StepAxis2Placement3D( "", origin, centerAxis, refAxis );
+            var surface = new StepToroidalSurface( "", axis, 1, 0.5 );
+            AssertFileContains( surface, @"
+#1=CARTESIAN_POINT('',(0.0,0.0,0.0));
+#2=DIRECTION('',(0.0,-1.0,0.0));
+#3=DIRECTION('',(0.0,0.0,-1.0));
+#4=AXIS2_PLACEMENT_3D('',#1,#2,#3);
+#5=TOROIDAL_SURFACE('',#4,1.0,0.5);
+" );
+        }
 
     }
 }
