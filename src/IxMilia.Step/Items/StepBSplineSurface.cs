@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace IxMilia.Step.Items
 {
-
-
-    public abstract class StepBSplineSurface : StepBoundedSurface
+    public class StepBSplineSurface : StepBoundedSurface
     {
+        public override StepItemType ItemType => StepItemType.BSplineSurface;
+
         public int UDegree { get; set; }
 
         public int VDegree { get; set; }
@@ -66,6 +66,40 @@ namespace IxMilia.Step.Items
             yield return new StepEnumerationValueSyntax( new StepBSplineSurfaceFormParser().Get( SurfaceForm ) );
             yield return new StepEnumerationValueSyntax( UClosed ? "T" : "F" );
             yield return new StepEnumerationValueSyntax( VClosed ? "T" : "F" );
+            yield return new StepEnumerationValueSyntax( SelfIntersect ? "T" : "F" );
+        }
+
+        internal static StepBSplineSurface CreateFromSyntaxList( StepBinder binder, StepSyntaxList syntaxList )
+        {
+            syntaxList.AssertListCount( 8 );
+            var controlPointsList = syntaxList.Values[3].GetValueList();
+
+            var surface = new StepBSplineSurface( syntaxList.Values[0].GetStringValue(),
+                                                  new StepCartesianPoint[controlPointsList.Values.Count][] )
+            {
+                UDegree = syntaxList.Values[1].GetIntegerValue(),
+                VDegree = syntaxList.Values[2].GetIntegerValue()
+            };
+
+            // control points
+            for ( int i = 0; i < controlPointsList.Values.Count; i++ )
+            {
+                var array = controlPointsList.Values[i].GetValueList();
+                var bindedArray = new StepCartesianPoint[array.Values.Count];
+                for ( int j = 0; j < array.Values.Count; j++ )
+                {
+                    var k = j; // capture to avoid rebinding
+                    binder.BindValue( array.Values[k], v => bindedArray[k] = v.AsType<StepCartesianPoint>() );
+                }
+                surface.ControlPointsList[i] = bindedArray;
+            }
+
+            surface.SurfaceForm = new StepBSplineSurfaceFormParser().Parse( syntaxList.Values[4].GetEnumerationValue() );
+            surface.UClosed = syntaxList.Values[5].GetBooleanValue();
+            surface.VClosed = syntaxList.Values[6].GetBooleanValue();
+            surface.SelfIntersect = syntaxList.Values[7].GetBooleanValue();
+            
+            return surface;
         }
     }
 }

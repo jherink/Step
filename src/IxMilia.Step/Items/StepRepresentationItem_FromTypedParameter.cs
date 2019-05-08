@@ -30,6 +30,9 @@ namespace IxMilia.Step.Items
                     case StepItemTypeExtensions.BSplineCurveWithKnotsText:
                         item = StepBSplineCurveWithKnots.CreateFromSyntaxList( binder, simpleItem.Parameters );
                         break;
+                    case StepItemTypeExtensions.BSplineSurfaceText:
+                        item = StepBSplineSurface.CreateFromSyntaxList( binder, simpleItem.Parameters );
+                        break;
                     case StepItemTypeExtensions.BSplineSurfaceWithKnotsText:
                         item = StepBSplineSurfaceWithKnots.CreateFromSyntaxList( binder, simpleItem.Parameters );
                         break;

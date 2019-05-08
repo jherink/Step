@@ -10,6 +10,7 @@ namespace IxMilia.Step.Items
         AxisPlacement2D,
         AxisPlacement3D,
         BSplineCurveWithKnots,
+        BSplineSurface,
         BSplineSurfaceWithKnots,
         CartesianPoint,
         Circle,
@@ -38,6 +39,7 @@ namespace IxMilia.Step.Items
         public const string Axis2Placement2DText = "AXIS2_PLACEMENT_2D";
         public const string Axis2Placement3DText = "AXIS2_PLACEMENT_3D";
         public const string BSplineCurveWithKnotsText = "B_SPLINE_CURVE_WITH_KNOTS";
+        public const string BSplineSurfaceText = "B_SPLINE_SURFACE";
         public const string BSplineSurfaceWithKnotsText = "B_SPLINE_SURFACE_WITH_KNOTS";
         public const string CartesianPointText = "CARTESIAN_POINT";
         public const string CircleText = "CIRCLE";
@@ -71,6 +73,8 @@ namespace IxMilia.Step.Items
                     return Axis2Placement3DText;
                 case StepItemType.BSplineCurveWithKnots:
                     return BSplineCurveWithKnotsText;
+                case StepItemType.BSplineSurface:
+                    return BSplineSurfaceText;
                 case StepItemType.BSplineSurfaceWithKnots:
                     return BSplineSurfaceWithKnotsText;
                 case StepItemType.CartesianPoint:
