@@ -28,7 +28,13 @@ namespace IxMilia.Step.Items
                 var j = i; // capture to avoid rebinding.
                 binder.BindValue( boundsList.Values[j], v => face.Bounds[j] = v.AsType<StepFaceBound>() );
             }
-            binder.BindValue( syntaxList.Values[2], v => face.FaceGeometry = v.AsType<StepSurface>() );
+            binder.BindValue( syntaxList.Values[2], v =>
+            {
+                if ( v.Item as StepSurface != null )
+                {
+                    face.FaceGeometry = v.AsType<StepSurface>();
+                }
+            } );
             face.SameSense = syntaxList.Values[3].GetBooleanValue();
 
             return face;

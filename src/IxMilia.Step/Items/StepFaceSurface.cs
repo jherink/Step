@@ -18,7 +18,7 @@ namespace IxMilia.Step.Items
         internal override IEnumerable<StepRepresentationItem> GetReferencedItems()
         {
             foreach ( var item in base.GetReferencedItems() ) yield return item;
-            yield return FaceGeometry;
+            if( FaceGeometry != null ) yield return FaceGeometry;
         }
 
         internal override IEnumerable<StepSyntax> GetParameters( StepWriter writer )

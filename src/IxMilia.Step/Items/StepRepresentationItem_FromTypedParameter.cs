@@ -102,8 +102,21 @@ namespace IxMilia.Step.Items
                 }
             }
             else
-            {
-                // TODO:
+            { // This is just a placeholder so that entities that reference this don't throw exceptions.
+                var complexSyntax = itemSyntax as StepComplexItemSyntax;
+                if ( complexSyntax != default( StepComplexItemSyntax ) )
+                {
+                    item = new StepComplexRepresentation();
+                    //var complexItem = new StepComplexRepresentation();
+                    //foreach (var entitySyntax in complexSyntax.Items )
+                    //{
+                    //    if ( simpleItem != default( StepRepresentationItem ) )
+                    //    {
+                    //        complexItem.Items.Add( simpleItem );
+                    //    }
+                    //}
+                    //item = complexItem;
+                }
             }
 
             return item;

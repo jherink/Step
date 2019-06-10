@@ -16,6 +16,12 @@ namespace IxMilia.Step.Items
             CfsFaces = new List<StepFace>( cfsFaces );
         }
 
+        internal override IEnumerable<StepRepresentationItem> GetReferencedItems()
+        {
+            foreach ( var item in base.GetReferencedItems() ) yield return item;
+            foreach ( var face in CfsFaces) yield return face;
+        }
+
         internal override IEnumerable<StepSyntax> GetParameters( StepWriter writer )
         {
             foreach ( var parameter in base.GetParameters( writer ) )

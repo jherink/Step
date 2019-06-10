@@ -795,7 +795,7 @@ END-ISO-10303-21;
         }
 
         [Fact]
-        public void Research()
+        public void ReadComplexRepresentation()
         {
             var data = @"
 #78=CARTESIAN_POINT('',(0.,0.,0.));
@@ -847,7 +847,9 @@ RATIONAL_B_SPLINE_SURFACE(((1.,0.778949453646108,1.),(0.707106781186548,
 REPRESENTATION_ITEM('')
 SURFACE()
 );";
-            var file = ReadFile( data );
+            var item = ReadFile( data ).Items.OfType<StepComplexRepresentation>().FirstOrDefault();
+
+            Assert.NotNull( item );
         }
     }
 }

@@ -30,7 +30,9 @@ namespace IxMilia.Step.Items
         SphericalSurface,
         ToroidalSurface,
         Vector,
-        VertexPoint
+        VertexPoint,
+
+        ComplexRepresentation
     }
 
     internal static class StepItemTypeExtensions
